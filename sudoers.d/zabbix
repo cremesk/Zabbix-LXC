@@ -1,7 +1,10 @@
-#zabbix
-Cmnd_Alias MON_LXC = /etc/zabbix/lxcdiscover.pl, /usr/bin/lxc-info *, /usr/bin/lxc-attach *
-Defaults:zabbix !requiretty
-Defaults:zabbix !syslog
+##########################################################
+## To edit this file:
+# visudo -f /etc/sudoers.d/zabbix
+#
+## Or edit with you custom editor:
+# EDITOR=vim visudo -f /etc/sudoers.d/zabbix
+##########################################################
 
-zabbix ALL = NOPASSWD: MON_LXC
+zabbix ALL=NOPASSWD:/bin/sh /etc/zabbix/scripts/lxc.sh *
 

@@ -6,22 +6,40 @@ LXC containers monitoring through Zabbix.
 Template "Template LXC Node" finds all containers, creates new hosts and apply template "Template LXC CT" on them.
 
 # Dependencies
-perl, sudo, zabbix-agent.
+sudo, zabbix-agent, zabbix-sender.
 
-Installation
-============
-1. copy lxcdiscover.pl, lxc-attach.sh,  lxc-cgroup.sh, and  lxc-info.sh to /etc/zabbix/
-2. copy zabbix_agentd.d/lxc.conf to /etc/zabbix/zabbix_agentd.d/
-3. copy sudoers.d/zabbix to /etc/sudoers.d/
-4. chown root:root /etc/sudoers.d/zabbix ; chmod 440 /etc/sudoers.d/zabbix
-5. chmod 755 /etc/zabbix/lxcdiscover.pl /etc/zabbix/lxc-attach.sh  /etc/zabbix/lxc-cgroup.sh  /etc/zabbix/lxc-info.sh
-6. restart zabbix-agent daemon.
-7. import "zbx_templates/Template LXC CT.xml" and "zbx_templates/Template LXC Node.xml" into your templates.
-8. apply template "Template LXC Node" to LXC hardware node (otherwise known as host system).
-9. enjoy.
+# Installation
+```
+mkdir /etc/zabbix/scripts
+chmod zabbix:zabbix /etc/zabbix/scripts
+cp zabbix/scripts/lxc.sh /etc/zabbix/scripts
+chown zabbix:zabbix /etc/zabbix/scripts/lxc.sh
+chmod 400 /etc/zabbix/scripts/lxc.sh
+cp zabbix/zabbix_agentd.d/lxc.conf /etc/zabbix/zabbix_agentd.d/
+cp sudoers.d/zabbix /etc/sudoers.d/
+chown root:root /etc/sudoers.d/zabbix ; chmod 440 /etc/sudoers.d/zabbix
+service zabbix-agent restart
+```
+
+## Optional add `sudo` rules via `visudo`
+Add `visudo` rule by command:
+```
+visudo -f /etc/sudoers.d/zabbix
+```
+
+And add rule line:
+```
+zabbix ALL=NOPASSWD:/bin/sh /etc/zabbix/scripts/lxc-info.sh *
+```
+
+Go to zabbix web gui and import "zbx_templates/Template_LXC_CT.xml" and "zbx_templates/Template_LXC_Node.xml" into your templates.
+
+Apply template "Template LXC Node" to LXC hardware node (otherwise known as host system).
 
 
-PS
-===========
-If you have problem with import template "Template LXC Node.xml", try use template without discovery rule and add it later manually.
-https://github.com/Lelik13a/Zabbix-OpenVZ/issues/2
+# If you do not want discovery containers:
+1. Do not import template "Template LXC Node.xml".
+
+2. Create host in zabbix with name in format: `lxc_host.lxc_container`, where `lxc_host` - hostname you LXC hardware node, `lxc_container` - hostname LXC container.
+
+3. Apply template "Template_LXC_CT" manually for new host.
