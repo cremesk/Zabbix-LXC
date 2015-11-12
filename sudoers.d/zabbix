@@ -7,4 +7,3 @@
 ##########################################################
 
 zabbix ALL=NOPASSWD:/bin/sh /etc/zabbix/scripts/lxc.sh *
-

@@ -16,22 +16,16 @@ ZABBIX_SENDER_DEBUG=0
 
 discover() {
 	lxc-ls | awk -v hostname=$(hostname) '
-		BEGIN{out="{\"data\":[";f=""}
+		BEGIN{out="{\"data\":["}
 		{
+			if (NR!=1) {out=out","}
 			cmd="lxc-info -s -n"$1
-			if (f == "") {
-				out=out"{"
-				f=","
-			} else {
-				out=out",{"
-			}
 			while ((cmd | getline c) > 0) {
 				split(c, a, " ")
-				out=out"\"{#CTID}\":\""$0"\","
+				out=out"{\"{#CTID}\":\""$0"\","
 				out=out"\"{#CTSTATUS}\":\""a[2]"\","
-				out=out"\"{#VENAME}\":\""hostname"\""
+				out=out"\"{#VENAME}\":\""hostname"\"}"
 			}
-			out=out"}"
 		}
 		END {print out"]}"}'
 }
