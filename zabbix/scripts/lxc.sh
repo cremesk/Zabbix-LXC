@@ -14,7 +14,7 @@ ZABBIX_SENDER_DEBUG=0
 # REQUIRED binaries: lxc-ls, lxc-info, lxc-attach, sed, awk, zabbix_sender.
 
 
-discover() {
+discovery() {
 	lxc-ls | awk -v hostname=$(hostname) '
 		BEGIN{out="{\"data\":["}
 		{
@@ -85,7 +85,7 @@ zabbix_send() {
 
 [ -n "$2" ] && CTID=`echo $2 | sed "s|^$(hostname)\.||"`
 case $1 in
-	'discover') discover ;;
+	'discovery') discovery ;;
 	'info') lxc_info $2 | zabbix_send ;;
 	'cgroup') lxc_cgroup $2 | zabbix_send ;;
 	'attach') lxc_attach $2 | zabbix_send ;;

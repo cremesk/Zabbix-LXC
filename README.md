@@ -11,13 +11,13 @@ sudo, zabbix-agent, zabbix-sender.
 # Installation
 ```
 mkdir /etc/zabbix/scripts
-chmod zabbix:zabbix /etc/zabbix/scripts
+chmod 755 /etc/zabbix/scripts
 cp zabbix/scripts/lxc.sh /etc/zabbix/scripts
-chown zabbix:zabbix /etc/zabbix/scripts/lxc.sh
-chmod 400 /etc/zabbix/scripts/lxc.sh
+chmod 644 /etc/zabbix/scripts/lxc.sh
 cp zabbix/zabbix_agentd.d/lxc.conf /etc/zabbix/zabbix_agentd.d/
 cp sudoers.d/zabbix /etc/sudoers.d/
-chown root:root /etc/sudoers.d/zabbix ; chmod 440 /etc/sudoers.d/zabbix
+chown root:root /etc/sudoers.d/zabbix
+chmod 440 /etc/sudoers.d/zabbix
 service zabbix-agent restart
 ```
 
