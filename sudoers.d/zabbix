@@ -6,4 +6,7 @@
 # EDITOR=vim visudo -f /etc/sudoers.d/zabbix
 ##########################################################
 
+# Disable successfully logging
+Defaults:zabbix !logfile, !syslog
+
 zabbix ALL=NOPASSWD:/bin/sh /etc/zabbix/scripts/lxc.sh *

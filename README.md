@@ -31,3 +31,18 @@ Apply template "Template LXC Node" to LXC hardware node (otherwise known as host
 2. Create host in zabbix with name in format: `lxc_host.lxc_container`, where `lxc_host` - hostname you LXC hardware node, `lxc_container` - hostname LXC container.
 
 3. Apply template "Template_LXC_CT" manually for new host.
+
+# Disable successfully pam_unix logging
+_**/etc/pam.d/sudo**_
+
+add this line:
+`session [success=1 default=ignore] pam_succeed_if.so quiet uid = 0 ruser = zabbix`
+
+```
+#%PAM-1.0
+
+@include common-auth
+@include common-account
+session [success=1 default=ignore] pam_succeed_if.so quiet uid = 0 ruser = zabbix
+@include common-session-noninteractive
+```
