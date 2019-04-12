@@ -21,21 +21,9 @@ chmod 440 /etc/sudoers.d/zabbix
 service zabbix-agent restart
 ```
 
-## Optional add `sudo` rules via `visudo`
-Add `visudo` rule by command:
-```
-visudo -f /etc/sudoers.d/zabbix
-```
-
-And add rule line:
-```
-zabbix ALL=NOPASSWD:/bin/sh /etc/zabbix/scripts/lxc-info.sh *
-```
-
 Go to zabbix web gui and import "zbx_templates/Template_LXC_CT.xml" and "zbx_templates/Template_LXC_Node.xml" into your templates.
 
 Apply template "Template LXC Node" to LXC hardware node (otherwise known as host system).
-
 
 # If you do not want discovery containers:
 1. Do not import template "Template LXC Node.xml".
